@@ -27,9 +27,27 @@ app.post('/items', jsonParser, function(request, response) {
 
 // DELETE Request
 app.delete('/items/:id', jsonParser, function(request, response) {
-  // Finish after meeting....
+  if (!request.body) {
+    return response.sendStatus(400);
+  } else {
+    var item = storage.delete(request.params.id);
+    response.status(200).json(item);
+  }
 });
 
+// PUT Request
+app.put('/items/:id/:name', jsonParser, function(request, response) {
+  if (!request.body) {
+    return response.sendStatus(400);
+  } else {
+    var id = request.params.id;
+    var name = request.params.name;
+    var item = storage.edit(id, name);
+    response.status(200).json(item);
+  }
+});
+
+// LISTENER
 app.listen(port, function(err, response) {
     if(err) {
 	console.log('server error');
