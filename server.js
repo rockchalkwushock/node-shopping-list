@@ -123,3 +123,10 @@ var storage = new Storage(); // create a new instance of `Storage( )`.
 storage.add('Broad beans');
 storage.add('Tomatoes');
 storage.add('Peppers');
+
+/*------------------------------ */
+/*----------- Exports -----------*/
+/*------------------------------ */
+
+exports.app = app;
+exports.storage = storage;
