@@ -44,6 +44,8 @@ describe('Shopping List', function() {
             res.body.name.should.be.a('string');
             res.body.id.should.be.a('number');
             res.body.name.should.equal('Kale');
+            // Once using Mongo no longer have 'storage'
+            // chai.request(app).get(items)...end(function(err, resp){....done();})
             storage.items.should.be.a('array');
             storage.items.should.have.length(4);
             storage.items[3].should.be.a('object');
@@ -75,15 +77,22 @@ describe('Shopping List', function() {
             done();
           });
     });
-    it('should add to an ID that exists on post');
-    it('should add without body data on post');
-    it('should add something other than valid JSON on post');
-    it('should edit without an ID in the endpoint on put');
-    it('should edit different ID in the endpoint than the body on put');
-    it('should add to an ID that does not exist on put');
-    it('should edit with something other than valid JSON on put');
-    it('should edit without body data on put');
-    it('should NOT delete ID that does not exist on delete');
-    it('should NOT delete without an ID in the endpoint on delete');
+    it('should add to an ID that exists on POST');
+    it('should add without body data on POST');
+    it('should add something other than valid JSON on PUT');
+    it('should edit without an ID in the endpoint on PUT');
+    it('should edit different ID in the endpoint than the body on PUT');
+    it('should add to an ID that does not exist on PUT');
+    it('should edit with something other than valid JSON on PUT');
+    it('should edit without body data on PUT');
+    it('should NOT delete ID that does not exist on DELETE');
+    it('should NOT delete without an ID in the endpoint on DELETE');
+    it('should return error when body not present POST', function(done) {
+      chai.request(app).post('/items').end(function(err, res) {
+        should.not.equal(err, null);
+        res.should.have.status(400);
+        done();
+      });
+    });
 
 });

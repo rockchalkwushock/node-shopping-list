@@ -29,7 +29,7 @@ app.get('/items', function(request, response) {
 
 // Adds an 'item' to items[].
 app.post('/items', jsonParser, function(request, response) {
-    if (!request.body) {
+    if (!request.body || !('name' in request.body)) {
       return response.sendStatus(400);
     } else {
       var item = storage.add(request.body.name);
