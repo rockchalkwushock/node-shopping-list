@@ -8,14 +8,24 @@ var jsonParser = bodyParser.json();
 var port = 3000;
 
 var app = express();
+// Loosk for static files contained in the public directory.
 app.use(express.static('public'));
 
-// GET Request
+/* ######################### */
+/* ########## GET ########## */
+/* ######################### */
+
+// Listens for '/items'.
+// Will return a JSON Object.
 app.get('/items', function(request, response) {
     response.json(storage.items);
 });
 
-// POST Request
+/* ######################### */
+/* ########## POST ######### */
+/* ######################### */
+
+// Adds an 'item' to items[].
 app.post('/items', jsonParser, function(request, response) {
     if (!request.body) {
       return response.sendStatus(400);
@@ -25,7 +35,11 @@ app.post('/items', jsonParser, function(request, response) {
     }
 });
 
-// DELETE Request
+/* ############################ */
+/* ########## DELETE ########## */
+/* ############################ */
+
+// Deletes an item by id using address 'items/id'
 app.delete('/items/:id', jsonParser, function(request, response) {
   if (!request.body) {
     return response.sendStatus(400);
@@ -35,7 +49,12 @@ app.delete('/items/:id', jsonParser, function(request, response) {
   }
 });
 
-// PUT Request
+/* ######################### */
+/* ########## PUT ########## */
+/* ######################### */
+
+// Updates the data of the object or adds to items[] if not present
+// using address 'items/id/name'.
 app.put('/items/:id/:name', jsonParser, function(request, response) {
   if (!request.body) {
     return response.sendStatus(400);
