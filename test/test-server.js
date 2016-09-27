@@ -62,9 +62,19 @@ describe('Shopping List', function() {
           .end(function(err, res) {
             should.equal(err, null);
             res.should.have.status(200);
+            res.should.be.json;
+            done();
           });
     });
-    it('should delete an item on DELETE');
+    it('should delete an item on DELETE', function(done) {
+      chai.request(app)
+          .delete('/items/1')
+          .end(function(err, res) {
+            should.equal(err, null);
+            res.should.have.status(200);
+            done();
+          });
+    });
     it('should add to an ID that exists on post');
     it('should add without body data on post');
     it('should add something other than valid JSON on post');
