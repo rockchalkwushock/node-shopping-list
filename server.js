@@ -5,9 +5,11 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var jsonParser = bodyParser.json();
-var port = 3000;
 
 var app = express();
+// Code from HEROKU Documentation.
+// This code will allow the app to run on HEROKU or on a port of my specification.
+app.set('port', (process.env.PORT || 3000));
 // Loosk for static files contained in the public directory.
 app.use(express.static('public'));
 
@@ -67,11 +69,11 @@ app.put('/items/:id/:name', jsonParser, function(request, response) {
 });
 
 // LISTENER
-app.listen(port, function(err, response) {
+app.listen(app.get('port'), function(err, response) {
     if(err) {
 	console.log('server error');
 } else {
-	console.log('server running on port: ' + port + '.');
+	console.log('Node app is running on port', app.get('port'));
 }
 });
 
