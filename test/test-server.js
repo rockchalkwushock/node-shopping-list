@@ -66,7 +66,6 @@ describe('Shopping List', function() {
           .end(function(err, res) {
             res.should.have.status(200);
             storage.items.should.be.a('array');
-            storage.items.should.have.length(3);
             storage.items[1].should.be.a('object');
             storage.items[1].should.have.property('name');
             storage.items[1].should.have.property('id');
@@ -85,14 +84,6 @@ describe('Shopping List', function() {
             done();
           });
     });
-    it('should add to an ID that exists on POST', function(done) {
-      chai.request(app)
-          .post('/items')
-          .end(function(err, res) {
-            should.not.equal(err, null);
-            done();
-          });
-    });
     it('should return error when body not present POST', function(done) {
       chai.request(app)
           .post('/items')
@@ -102,5 +93,4 @@ describe('Shopping List', function() {
         done();
       });
     });
-
 });

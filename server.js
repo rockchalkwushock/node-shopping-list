@@ -32,8 +32,7 @@ app.post('/items', jsonParser, function(request, response) {
     if (!request.body || !('name' in request.body)) {
         return response.sendStatus(400);
     } else {
-        var name = request.params.name;
-        console.log(name);
+        var name = request.body.name;
         var item = storage.add(name);
         response.status(201).json(item);
     }
@@ -97,8 +96,8 @@ var Storage = function() {
 //  Will increment this.id by +1 every iteration.
 Storage.prototype.add = function(name) {
     var item = {
-        name: name,
-        id: this.id
+        "name": name,
+        "id": this.id
     }; // Set item equal to the current name and id.
     this.items.push(item); // Push the item to the items[].
     this.id += 1; // Change id value.
