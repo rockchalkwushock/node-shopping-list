@@ -32,7 +32,9 @@ app.post('/items', jsonParser, function(request, response) {
     if (!request.body || !('name' in request.body)) {
         return response.sendStatus(400);
     } else {
-        var item = storage.add(request.body.name);
+        var name = request.params.name;
+        console.log(name);
+        var item = storage.add(name);
         response.status(201).json(item);
     }
 });
@@ -43,12 +45,12 @@ app.post('/items', jsonParser, function(request, response) {
 
 // Deletes an item by id using address 'items/id'
 app.delete('/items/:id', jsonParser, function(request, response) {
-    var id = request.params.id;
-    var deletedItem = storage.delete(id);
-    if (deletedItem) {
-        response.status(200).json(deletedItem);
-    } else {
+    if (!request.body) {
         return response.sendStatus(400);
+    } else {
+        var id = request.params.id;
+        var item = storage.delete(id);
+        response.status(200).json(item);
     }
 });
 
@@ -58,18 +60,14 @@ app.delete('/items/:id', jsonParser, function(request, response) {
 
 // Updates the data of the object or adds to items[] if not present
 // using address 'items/id/name'.
-app.put('/items/:id', jsonParser, function(request, response) {
-    var id = parseInt(request.params.id);
-    console.log(id);
-    var name = request.body.name;
-    console.log(request.body.name);
-    console.log(storage);
-    var updatedItem = storage.put(name, id);
-    console.log(storage);
-    if (updatedItem) {
-        response.status(200).json(updatedItem);
-    } else {
+app.put('/items/:id/:name', jsonParser, function(request, response) {
+    if (!request.body) {
         return response.sendStatus(400);
+    } else {
+        var id = request.params.id;
+        var name = request.params.name;
+        var item = storage.edit(id, name);
+        response.status(200).json(item);
     }
 });
 
@@ -114,6 +112,7 @@ Storage.prototype.delete = function(id) {
     } else {
         return this.items.splice(id, 1); // remove the specific ID from the array.
     }
+    return this.items;
 };
 
 // Edit( ) will modify an item present in the array.
@@ -124,6 +123,7 @@ Storage.prototype.edit = function(id, name) {
     } else {
         storage.add(name); // Item not found in array, create  using `add()`.
     }
+    return this.items;
 };
 
 var storage = new Storage(); // create a new instance of `Storage( )`.
