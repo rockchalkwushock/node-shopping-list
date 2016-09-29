@@ -59,12 +59,18 @@ describe('Shopping List', function() {
     });
     it('should edit an item on PUT', function(done) {
       chai.request(app)
-          .put('/items/:id/:name')
-          .send()
+          .put('/items/' + 0)
+          .send({"name": "Pickles"})
           .end(function(err, res) {
             should.equal(err, null);
             res.should.have.status(200);
             res.should.be.json;
+            res.body.should.have.property('name');
+            res.body.should.have.property('id');
+            res.body.name.should.be.a('string');
+            res.body.id.should.be.a('number');
+            res.body.name.should.equal("Pickles");
+            res.body.id.should.equal(0);
             done();
           });
     });
@@ -77,18 +83,18 @@ describe('Shopping List', function() {
             done();
           });
     });
-    it('should add to an ID that exists on POST');
-    it('should add without body data on POST');
-    it('should add something other than valid JSON on PUT');
-    it('should edit without an ID in the endpoint on PUT');
-    it('should edit different ID in the endpoint than the body on PUT');
-    it('should add to an ID that does not exist on PUT');
-    it('should edit with something other than valid JSON on PUT');
-    it('should edit without body data on PUT');
-    it('should NOT delete ID that does not exist on DELETE');
-    it('should NOT delete without an ID in the endpoint on DELETE');
+    it('should add to an ID that exists on POST', function(done) {
+      chai.request(app)
+          .post('/items')
+          .end(function(err, res) {
+            should.not.equal(err, null);
+            done();
+          });
+    });
     it('should return error when body not present POST', function(done) {
-      chai.request(app).post('/items').end(function(err, res) {
+      chai.request(app)
+          .post('/items')
+          .end(function(err, res) {
         should.not.equal(err, null);
         res.should.have.status(400);
         done();
